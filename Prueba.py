@@ -24,6 +24,9 @@ C_BTN_HOVER = (20,  40,  80)
 C_BORDER    = (30,  60, 110)
 C_GOLD      = (255, 210,  50)
 
+# ──────────────────────────────────────────────
+#  FUNCIÓN PARA MANEJAR IMÁGENES (NUEVO - LÍNEAS 42-83)
+# ──────────────────────────────────────────────
 def cargar_imagen_personaje(nombre_personaje):
     """Intenta cargar la imagen del personaje desde la carpeta 'imagenes'"""
     # Limpiar el nombre para usarlo como nombre de archivo
@@ -70,7 +73,8 @@ base_inicial = {
     "D.Va":          {"rol_tanque","usa_mecha","es_coreana","usa_arma_de_fuego","puede_volar","es_heroina","tecnologia_avanzada","alta_movilidad","protege_aliados"},
     "Doomfist":      {"rol_tanque","usa_guante","es_talon","es_lider","combate_cuerpo_a_cuerpo","es_villano","alta_movilidad","gran_tamano","es_africano"},
     "Domina":        {"rol_tanque","usa_luz","es_talon","usa_escudo","es_villana","gran_tamano","tecnologia_avanzada"},
-    "Junker Queen":  {"rol_tanque","usa_hacha","usa_escopeta","es_de_junkertown","combate_cuerpo_a_cuerpo","es_lider","gran_tamano","drena_vida"},
+    "Hazard":        {"rol_tanque","usa_escopeta","combate_cuerpo_a_cuerpo","es_lider","gran_tamano","puede_saltar","tecnologia_avanzada","es_cyborg","alta_movilidad"},
+    "Junker Queen":  {"rol_tanque","usa_hacha","usa_arma_de_fuego","usa_escopeta","es_de_junkertown","combate_cuerpo_a_cuerpo","es_lider","gran_tamano","drena_vida"},
     "Mauga":         {"rol_tanque","usa_ametralladoras","es_talon","usa_arma_de_fuego","es_villano","gran_tamano","es_de_isla"},
     "Orisa":         {"rol_tanque","es_omnico","es_overwatch","usa_lanza","protege_aliados","tecnologia_avanzada","es_africana","usa_energia"},
     "Ramattra":      {"rol_tanque","es_omnico","es_lider","usa_baston","gran_tamano","forma_nemesis","combate_cuerpo_a_cuerpo","es_villano","usa_energia","null_sector"},
@@ -86,15 +90,15 @@ base_inicial = {
     "Ashe":           {"rol_dano","usa_rifle","usa_arma_de_fuego","tiene_companero","es_lider","estilo_vaquero","es_americana"},
     "Bastion":        {"rol_dano","es_omnico","es_overwatch","usa_ametralladora","modo_torreta","tecnologia_avanzada","usa_arma_de_fuego"},
     "Cassidy":        {"rol_dano","usa_revolver","usa_arma_de_fuego","estilo_vaquero","es_overwatch","usa_granadas","es_americano"},
-    "Echo":           {"rol_dano","es_omnico","puede_volar","es_overwatch","tecnologia_avanzada","puede_copiar","usa_laser"},
+    "Echo":           {"rol_dano","es_omnico","alta_movilidad","puede_volar","es_overwatch","tecnologia_avanzada","puede_copiar","usa_laser"},
     "Genji":          {"rol_dano","usa_espada","es_cyborg","es_overwatch","es_japones","alta_movilidad","combate_cuerpo_a_cuerpo","usa_kunai","blackwatch"},
     "Hanzo":          {"rol_dano","usa_arco","es_japones","usa_dragones","ataque_distancia","usa_explosivos"},
     "Junkrat":        {"rol_dano","usa_explosivos","es_de_junkertown","usa_granadas","caotico","alta_movilidad"},
     "Mei":            {"rol_dano","usa_hielo","cientifico","es_overwatch","controla_zona","es_heroina","es_china","usa_arma_de_fuego"},
-    "Pharah":         {"rol_dano","puede_volar","usa_cohetes","es_overwatch","usa_arma_de_fuego","es_egipcia","usa_armadura"},
-    "Reaper":         {"rol_dano","usa_escopetas","es_talon","puede_teletransportarse","es_villano","usa_mascara","blackwatch","es_americano"},
+    "Pharah":         {"rol_dano","puede_volar","usa_cohetes","alta_movilidad","es_overwatch","usa_arma_de_fuego","es_egipcia","usa_armadura"},
+    "Reaper":         {"rol_dano","usa_escopetas","usa_arma_de_fuego","es_talon","alta_movilidad","puede_teletransportarse","es_villano","usa_mascara","blackwatch","es_americano"},
     "Sojourn":        {"rol_dano","usa_railgun","es_cyborg","es_overwatch","usa_arma_de_fuego","alta_movilidad","es_canadiense"},
-    "Soldier: 76":    {"rol_dano","usa_rifle","usa_arma_de_fuego","es_overwatch","usa_visor","veterano","es_americano"},
+    "Soldado: 76":    {"rol_dano","usa_rifle","usa_arma_de_fuego","es_overwatch","usa_visor","veterano","es_americano"},
     "Sombra":         {"rol_dano","hackea","es_talon","puede_volverse_invisible","usa_arma_de_fuego","alta_movilidad","es_mexicana"},
     "Symmetra":       {"rol_dano","usa_luz","usa_torreta","crea_portal","tecnologia_avanzada","es_india"},
     "Torbjorn":       {"rol_dano","usa_torreta","es_ingeniero","usa_martillo","tecnologia_avanzada","es_sueco","usa_arma_de_fuego"},
@@ -379,6 +383,9 @@ class AkinatorApp:
         self.personajes = cargar_base()
         self._init_state()
         self._build_menu()
+        
+        # NUEVO: Variable para almacenar la imagen del personaje (LÍNEA 487)
+        self.imagen_personaje = None
 
     # ── Estado del juego ──────────────────────
     def _init_state(self):
@@ -444,13 +451,19 @@ class AkinatorApp:
         self.num_pregunta += 1
         self.state = self.QUESTION
 
+    # NUEVO: Método _set_result modificado para cargar la imagen (LÍNEAS 566-579)
     def _set_result(self, res, tipo):
         self.resultado      = res
         self.resultado_tipo = tipo
         self.state = self.RESULT
         self._build_result_btns()
+        
         if tipo == "exacto":
             self._spawn_particles()
+            # Cargar la imagen del personaje
+            self.imagen_personaje = cargar_imagen_personaje(res)
+        else:
+            self.imagen_personaje = None
 
     def answer(self, yes: bool):
         if yes:
@@ -577,7 +590,7 @@ class AkinatorApp:
         tip = self.f_small.render("Pulsa  S = Sí  •  N = No", True, C_DIMTEXT)
         self.screen.blit(tip, tip.get_rect(centerx=ANCHO//2, y=550))
 
-    
+    # NUEVO: Método draw_result completamente modificado (LÍNEAS 725-813)
     def draw_result(self):
         self._draw_bg()
         self._update_particles()
@@ -593,10 +606,32 @@ class AkinatorApp:
             pygame.draw.rect(self.screen, C_PANEL, panel, border_radius=18)
             pygame.draw.rect(self.screen, C_GOLD,  panel, 3, border_radius=18)
 
-            txt = self.f_big.render("Tu personaje es…", True, C_DIMTEXT)
-            self.screen.blit(txt, txt.get_rect(centerx=ANCHO//2, y=180))
-            big = self.f_title.render(str(self.resultado), True, C_GOLD)
-            self.screen.blit(big, big.get_rect(centerx=ANCHO//2, y=250))
+            # Mostrar imagen del personaje si existe
+            if self.imagen_personaje:
+                # Posición de la imagen (lado izquierdo del panel)
+                img_x = panel.x + 30
+                img_y = panel.y + 50
+                self.screen.blit(self.imagen_personaje, (img_x, img_y))
+                
+                # Ajustar posición del texto para que no se superponga
+                txt_x = img_x + 220
+                txt_y = img_y + 40
+                
+                txt = self.f_big.render("Tu personaje es…", True, C_DIMTEXT)
+                self.screen.blit(txt, txt.get_rect(x=txt_x, y=txt_y))
+                
+                big = self.f_title.render(str(self.resultado), True, C_GOLD)
+                big_rect = big.get_rect(x=txt_x, y=txt_y + 50)
+                # Asegurar que el texto no se salga de la pantalla
+                if big_rect.right > ANCHO - 30:
+                    big = self.f_med.render(str(self.resultado), True, C_GOLD)
+                    big_rect = big.get_rect(x=txt_x, y=txt_y + 50)
+                self.screen.blit(big, big_rect)
+            else:
+                txt = self.f_big.render("Tu personaje es…", True, C_DIMTEXT)
+                self.screen.blit(txt, txt.get_rect(centerx=ANCHO//2, y=180))
+                big = self.f_title.render(str(self.resultado), True, C_GOLD)
+                self.screen.blit(big, big.get_rect(centerx=ANCHO//2, y=250))
 
             q_txt = self.f_small.render(f"Resuelto en {self.num_pregunta} preguntas", True, C_DIMTEXT)
             self.screen.blit(q_txt, q_txt.get_rect(centerx=ANCHO//2, y=360))
