@@ -140,14 +140,14 @@ base_inicial = {
     "Junkrat":        {"rol_dano","usa_explosivos","es_de_junkertown","usa_granadas","caotico","alta_movilidad"},
     "Mei":            {"rol_dano","usa_hielo","cientifico","es_overwatch","controla_zona","es_heroina","es_china","usa_arma_de_fuego"},
     "Pharah":         {"rol_dano","puede_volar","usa_cohetes","alta_movilidad","es_overwatch","usa_arma_de_fuego","es_egipcia","usa_armadura"},
-    "Reaper":         {"rol_dano","usa_escopetas","usa_arma_de_fuego","es_talon","alta_movilidad","puede_teletransportarse","es_villano","usa_mascara","blackwatch","es_americano"},
+    "Reaper":         {"rol_dano","usa_escopeta","usa_arma_de_fuego","es_talon","alta_movilidad","puede_teletransportarse","es_villano","usa_mascara","blackwatch","es_americano"},
     "Sojourn":        {"rol_dano","usa_railgun","es_cyborg","es_overwatch","usa_arma_de_fuego","alta_movilidad","es_canadiense"},
     "Soldado: 76":    {"rol_dano","usa_rifle","usa_arma_de_fuego","es_overwatch","usa_visor","veterano","es_americano"},
     "Sombra":         {"rol_dano","hackea","es_talon","puede_volverse_invisible","usa_arma_de_fuego","alta_movilidad","es_mexicana"},
     "Symmetra":       {"rol_dano","usa_luz","usa_torreta","crea_portal","tecnologia_avanzada","es_india"},
     "Torbjorn":       {"rol_dano","usa_torreta","es_ingeniero","usa_martillo","tecnologia_avanzada","es_sueco","usa_arma_de_fuego"},
     "Tracer":         {"rol_dano","alta_movilidad","puede_retroceder_tiempo","usa_pistolas","es_overwatch","es_britanica"},
-    "Venture":        {"rol_dano","excava","usa_taladro","explorador","alta_movilidad","combate_cuerpo_a_cuerpo"},
+    "Venture":        {"rol_dano","excava","usa_taladro","explorador","alta_movilidad","combate_cuerpo_a_cuerpo","es_mexicana"},
     "Widowmaker":     {"rol_dano","usa_sniper","es_talon","ataque_distancia","es_villana","es_francesa","usa_gancho"},
     "Freja":          {"rol_dano","usa_arco","es_talon","alta_movilidad","ataque_distancia","usa_explosivos"},
     "Emre":           {"rol_dano","es_cyborg","es_talon","usa_arma_de_fuego","usa_granadas","usa_rifle","es_villano"},
@@ -158,7 +158,7 @@ base_inicial = {
     # APOYO
     "Ana":           {"rol_apoyo","usa_sniper","cura_aliados","es_egipcia","ataque_distancia","es_overwatch","usa_mascara","veterano"},
     "Baptiste":      {"rol_apoyo","cura_aliados","usa_arma_de_fuego","protege_aliados","ex_talon","es_haitiano"},
-    "Brigitte":      {"rol_apoyo","usa_escudo","usa_maza","es_overwatch","cura_aliados","combate_cuerpo_a_cuerpo","protege_aliados","es_sueca"},
+    "Brigitte":      {"rol_apoyo","usa_escudo","usa_maza","es_overwatch","tiene_companero","cura_aliados","combate_cuerpo_a_cuerpo","protege_aliados","es_sueca"},
     "Illari":        {"rol_apoyo","usa_sol","cura_aliados","usa_torreta","ataque_distancia","usa_arma_de_fuego","es_peruana"},
     "Juno":          {"rol_apoyo","cura_aliados","alta_movilidad","es_overwatch","espacial","tecnologia_avanzada","puede_volar"},
     "Jetpack cat":   {"rol_apoyo","cura_aliados","es_animal","usa_arma_de_fuego","alta_movilidad","es_overwatch","puede_volar","ataque_distancia"},
@@ -172,10 +172,13 @@ base_inicial = {
     "Zenyatta":      {"rol_apoyo","es_omnico","cura_aliados","usa_orbes","monje","ataque_distancia"},
 
     # LORE
+    "Anubis":        {"ia","es_villano","tecnologia_avanzada","personaje_lore"},
     "Athena":        {"ia","es_overwatch","tecnologia_avanzada","personaje_lore"},
+    "Bob":           {"es_omnico","usa_arma_de_fuego","estilo_vaquero","gran_tamano","personaje_lore"},
+    "Mina Liao":     {"cientifico","es_overwatch","civil","personaje_lore","tecnologia_avanzada"},
     "Mondatta":      {"es_omnico","monje","personaje_lore"},
     "Maximilien":    {"es_omnico","es_talon","personaje_lore",},
-    "Efi Oladele":   {"cientifico","es_overwatch","civil","personaje_lore","tecnologia_avanzada"},
+    "Efi Oladele":   {"cientifico","es_overwatch","civil","personaje_lore","tecnologia_avanzada","es_africano"},
     "Emily":         {"personaje_lore","civil","es_britanica"},
     "Gerard Lacroix": {"personaje_lore","civil","es_overwatch"},
     "Balderich":     {"personaje_lore","usa_martillo","usa_escudo"},
@@ -191,7 +194,7 @@ PREGUNTAS = [
     ("¿Es un héroe tanque?",                    "rol_tanque"),
     ("¿Es un héroe de daño (DPS)?",             "rol_dano"),
     ("¿Es un héroe de apoyo?",                  "rol_apoyo"),
-    ("¿Es parte del lore?",                     "personaje_lore"),
+    ("¿Es un personaje no jugable?",            "personaje_lore"),
     ("¿Cura aliados?",                          "cura_aliados"),
     ("¿Usa armas de fuego?",                    "usa_arma_de_fuego"),
     ("¿Usa escudo?",                            "usa_escudo"),
@@ -223,7 +226,7 @@ PREGUNTAS = [
     ("¿Usa sniper?",                            "usa_sniper"),
     ("¿Usa explosivos?",                        "usa_explosivos"),
     ("¿Tiene alta movilidad?",                  "alta_movilidad"),
-    ("¿Es una asistente virtual?",              "ia"),
+    ("¿Es un ser virtual?",                     "ia"),
     ("¿Es una persona normal?",                 "civil"),
     ("¿Es científico o trabaja con ciencia?",   "cientifico"),
     ("¿Puede saltar grandes distancias?",       "puede_saltar"),
@@ -462,8 +465,8 @@ class AkinatorApp:
 
     def _build_question_btns(self):
         cx = ANCHO // 2
-        self.btn_si  = Button((cx-220, 470, 200, 65), "✓  SÍ",  (20,80,30), (30,140,50),  C_YES, self.f_big)
-        self.btn_no  = Button((cx+20,  470, 200, 65), "✗  NO",  (80,20,20), (140,30,30),  C_NO,  self.f_big)
+        self.btn_si  = Button((cx-220, 470, 200, 65), "  SÍ",  (20,80,30), (30,140,50),  C_YES, self.f_big)
+        self.btn_no  = Button((cx+20,  470, 200, 65), "  NO",  (80,20,20), (140,30,30),  C_NO,  self.f_big)
         self.btn_menu_q = Button((20, 20, 110, 38), "← Menú", C_PANEL, C_BTN_HOVER, C_DIMTEXT, self.f_small)
 
     def _build_result_btns(self):
@@ -529,11 +532,11 @@ class AkinatorApp:
     def save_learned(self):
         nombre = self.text_input.text.strip()
         if not nombre:
-            self.msg_aprendido = "⚠ Escribe un nombre válido."; return
+            self.msg_aprendido = " Escribe un nombre válido."; return
         nuevos = self.pos.copy()
         self.personajes[nombre] = nuevos
         guardar_base(self.personajes)
-        self.msg_aprendido = f"✅ '{nombre}' aprendido. ¡Gracias!"
+        self.msg_aprendido = f" '{nombre}' aprendido. ¡Gracias!"
         self.learn_step = 1   # Mostrar confirmación breve
 
     # ── Partículas ────────────────────────────

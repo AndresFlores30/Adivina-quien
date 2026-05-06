@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import random
 import pygame
 import pygame.freetype
 
@@ -25,10 +26,45 @@ C_BORDER    = (30,  60, 110)
 C_GOLD      = (255, 210,  50)
 
 # ──────────────────────────────────────────────
-#  FUNCIÓN PARA MANEJAR IMÁGENES (NUEVO - LÍNEAS 42-83)
+#  FUNCIONES PARA MANEJO DE IMÁGENES MEJORADAS
 # ──────────────────────────────────────────────
-def cargar_imagen_personaje(nombre_personaje):
-    """Intenta cargar la imagen del personaje desde la carpeta 'imagenes'"""
+
+def escalar_manteniendo_proporcion(imagen, tamaño_maximo):
+    """Escala una imagen manteniendo su proporción original"""
+    ancho_original, alto_original = imagen.get_size()
+    ancho_max, alto_max = tamaño_maximo
+    
+    # Calcular la relación de aspecto
+    ratio_original = ancho_original / alto_original
+    ratio_max = ancho_max / alto_max
+    
+    if ratio_original > ratio_max:
+        # La imagen es más ancha en proporción
+        nuevo_ancho = ancho_max
+        nuevo_alto = int(ancho_max / ratio_original)
+    else:
+        # La imagen es más alta en proporción
+        nuevo_alto = alto_max
+        nuevo_ancho = int(alto_max * ratio_original)
+    
+    # Escalar la imagen suavemente
+    imagen_escalada = pygame.transform.smoothscale(imagen, (nuevo_ancho, nuevo_alto))
+    
+    # Crear una superficie transparente del tamaño máximo y centrar la imagen
+    superficie_final = pygame.Surface(tamaño_maximo, pygame.SRCALPHA)
+    superficie_final.fill((0, 0, 0, 0))
+    
+    # Calcular posición para centrar
+    pos_x = (tamaño_maximo[0] - nuevo_ancho) // 2
+    pos_y = (tamaño_maximo[1] - nuevo_alto) // 2
+    
+    superficie_final.blit(imagen_escalada, (pos_x, pos_y))
+    
+    return superficie_final
+
+def cargar_imagen_personaje(nombre_personaje, tamaño_maximo=(250, 250)):
+    """Intenta cargar la imagen del personaje desde la carpeta 'imagenes'
+       tamaño_maximo: tupla (ancho, alto) que define el tamaño máximo de la imagen"""
     # Limpiar el nombre para usarlo como nombre de archivo
     nombre_archivo = nombre_personaje.replace(":", "").replace(".", "")
     nombre_archivo = nombre_archivo.replace(" ", "_")
@@ -41,26 +77,34 @@ def cargar_imagen_personaje(nombre_personaje):
         if os.path.exists(ruta):
             try:
                 imagen = pygame.image.load(ruta)
-                imagen = pygame.transform.scale(imagen, (200, 200))
-                return imagen
-            except:
+                # Convertir para optimizar
+                if imagen.get_alpha():
+                    imagen = imagen.convert_alpha()
+                else:
+                    imagen = imagen.convert()
+                # Escalar la imagen manteniendo la proporción
+                return escalar_manteniendo_proporcion(imagen, tamaño_maximo)
+            except Exception as e:
+                print(f"Error cargando imagen {ruta}: {e}")
                 return None
     
-    return crear_signo_pregunta()
+    return crear_signo_pregunta(tamaño_maximo)
 
-def crear_signo_pregunta():
-    """Crea una superficie con un signo de pregunta"""
-    surf = pygame.Surface((200, 200), pygame.SRCALPHA)
+def crear_signo_pregunta(tamaño=(250, 250)):
+    """Crea una superficie con un signo de pregunta del tamaño especificado"""
+    ancho, alto = tamaño
+    surf = pygame.Surface((ancho, alto), pygame.SRCALPHA)
     surf.fill((0, 0, 0, 0))
     
     # Fondo gris oscuro
-    pygame.draw.rect(surf, (50, 50, 50), (0, 0, 200, 200), border_radius=10)
-    pygame.draw.rect(surf, C_ACCENT, (0, 0, 200, 200), 3, border_radius=10)
+    pygame.draw.rect(surf, (50, 50, 50), (0, 0, ancho, alto), border_radius=10)
+    pygame.draw.rect(surf, C_ACCENT, (0, 0, ancho, alto), 3, border_radius=10)
     
-    # Signo de pregunta
-    font = pygame.font.Font(None, 120)
+    # Signo de pregunta (tamaño dinámico)
+    tamaño_fuente = min(ancho, alto) // 2
+    font = pygame.font.Font(None, tamaño_fuente)
     text = font.render("?", True, C_ACCENT)
-    text_rect = text.get_rect(center=(100, 100))
+    text_rect = text.get_rect(center=(ancho//2, alto//2))
     surf.blit(text, text_rect)
     
     return surf
@@ -70,7 +114,7 @@ def crear_signo_pregunta():
 # ──────────────────────────────────────────────
 base_inicial = {
     # TANQUES
-    "D.Va":          {"rol_tanque","usa_mecha","es_coreana","usa_arma_de_fuego","puede_volar","es_heroina","tecnologia_avanzada","alta_movilidad","protege_aliados"},
+    "D_Va":          {"rol_tanque","usa_mecha","es_coreana","usa_cohetes","usa_arma_de_fuego","puede_volar","es_heroina","tecnologia_avanzada","alta_movilidad","protege_aliados"},
     "Doomfist":      {"rol_tanque","usa_guante","es_talon","es_lider","combate_cuerpo_a_cuerpo","es_villano","alta_movilidad","gran_tamano","es_africano"},
     "Domina":        {"rol_tanque","usa_luz","es_talon","usa_escudo","es_villana","gran_tamano","tecnologia_avanzada"},
     "Hazard":        {"rol_tanque","usa_escopeta","combate_cuerpo_a_cuerpo","caotico","es_lider","gran_tamano","puede_saltar","tecnologia_avanzada","es_cyborg","alta_movilidad"},
@@ -81,8 +125,8 @@ base_inicial = {
     "Reinhardt":     {"rol_tanque","usa_martillo","usa_escudo","es_overwatch","combate_cuerpo_a_cuerpo","es_aleman","gran_tamano","veterano"},
     "Roadhog":       {"rol_tanque","usa_gancho","usa_escopeta","es_de_junkertown","gran_tamano","usa_mascara","usa_explosivos"},
     "Sigma":         {"rol_tanque","controla_gravedad","es_talon","cientifico","tecnologia_avanzada","usa_escudo"},
-    "Winston":       {"rol_tanque","es_animal","cientifico","usa_rayo","puede_saltar","es_overwatch","tecnologia_avanzada"},
-    "Wrecking Ball": {"rol_tanque","es_animal","usa_mecha","alta_movilidad","es_de_junkertown","tecnologia_avanzada","gran_tamano"},
+    "Winston":       {"rol_tanque","es_animal","cientifico","espacial","usa_rayo","puede_saltar","es_overwatch","tecnologia_avanzada"},
+    "Wrecking Ball": {"rol_tanque","es_animal","usa_ametralladoras","usa_mecha","alta_movilidad","espacial","es_de_junkertown","tecnologia_avanzada","gran_tamano"},
     "Zarya":         {"rol_tanque","usa_canon","es_rusa","es_overwatch","usa_barreras","protege_aliados","usa_arma_de_fuego"},
 
     # DAÑO
@@ -96,14 +140,14 @@ base_inicial = {
     "Junkrat":        {"rol_dano","usa_explosivos","es_de_junkertown","usa_granadas","caotico","alta_movilidad"},
     "Mei":            {"rol_dano","usa_hielo","cientifico","es_overwatch","controla_zona","es_heroina","es_china","usa_arma_de_fuego"},
     "Pharah":         {"rol_dano","puede_volar","usa_cohetes","alta_movilidad","es_overwatch","usa_arma_de_fuego","es_egipcia","usa_armadura"},
-    "Reaper":         {"rol_dano","usa_escopetas","usa_arma_de_fuego","es_talon","alta_movilidad","puede_teletransportarse","es_villano","usa_mascara","blackwatch","es_americano"},
+    "Reaper":         {"rol_dano","usa_escopeta","usa_arma_de_fuego","es_talon","alta_movilidad","puede_teletransportarse","es_villano","usa_mascara","blackwatch","es_americano"},
     "Sojourn":        {"rol_dano","usa_railgun","es_cyborg","es_overwatch","usa_arma_de_fuego","alta_movilidad","es_canadiense"},
     "Soldado: 76":    {"rol_dano","usa_rifle","usa_arma_de_fuego","es_overwatch","usa_visor","veterano","es_americano"},
     "Sombra":         {"rol_dano","hackea","es_talon","puede_volverse_invisible","usa_arma_de_fuego","alta_movilidad","es_mexicana"},
     "Symmetra":       {"rol_dano","usa_luz","usa_torreta","crea_portal","tecnologia_avanzada","es_india"},
     "Torbjorn":       {"rol_dano","usa_torreta","es_ingeniero","usa_martillo","tecnologia_avanzada","es_sueco","usa_arma_de_fuego"},
     "Tracer":         {"rol_dano","alta_movilidad","puede_retroceder_tiempo","usa_pistolas","es_overwatch","es_britanica"},
-    "Venture":        {"rol_dano","excava","usa_taladro","explorador","alta_movilidad","combate_cuerpo_a_cuerpo"},
+    "Venture":        {"rol_dano","excava","usa_taladro","explorador","alta_movilidad","combate_cuerpo_a_cuerpo","es_mexicana"},
     "Widowmaker":     {"rol_dano","usa_sniper","es_talon","ataque_distancia","es_villana","es_francesa","usa_gancho"},
     "Freja":          {"rol_dano","usa_arco","es_talon","alta_movilidad","ataque_distancia","usa_explosivos"},
     "Emre":           {"rol_dano","es_cyborg","es_talon","usa_arma_de_fuego","usa_granadas","usa_rifle","es_villano"},
@@ -114,9 +158,9 @@ base_inicial = {
     # APOYO
     "Ana":           {"rol_apoyo","usa_sniper","cura_aliados","es_egipcia","ataque_distancia","es_overwatch","usa_mascara","veterano"},
     "Baptiste":      {"rol_apoyo","cura_aliados","usa_arma_de_fuego","protege_aliados","ex_talon","es_haitiano"},
-    "Brigitte":      {"rol_apoyo","usa_escudo","usa_maza","es_overwatch","cura_aliados","combate_cuerpo_a_cuerpo","protege_aliados","es_sueca"},
+    "Brigitte":      {"rol_apoyo","usa_escudo","usa_maza","es_overwatch","tiene_companero","cura_aliados","combate_cuerpo_a_cuerpo","protege_aliados","es_sueca"},
     "Illari":        {"rol_apoyo","usa_sol","cura_aliados","usa_torreta","ataque_distancia","usa_arma_de_fuego","es_peruana"},
-    "Juno":          {"rol_apoyo","cura_aliados","alta_movilidad","es_overwatch","espacial","tecnologia_avanzada","puede_volar"},
+    "Juno":          {"rol_apoyo","cura_aliados","alta_movilidad","es_overwatch","espacial","aumenta_velocidad","tecnologia_avanzada","puede_volar"},
     "Jetpack cat":   {"rol_apoyo","cura_aliados","es_animal","usa_arma_de_fuego","alta_movilidad","es_overwatch","puede_volar","ataque_distancia"},
     "Kiriko":        {"rol_apoyo","cura_aliados","es_japonesa","usa_kunai","alta_movilidad","usa_espiritu"},
     "Lifeweaver":    {"rol_apoyo","cura_aliados","usa_naturaleza","protege_aliados","tecnologia_avanzada","es_tailandes"},
@@ -128,16 +172,19 @@ base_inicial = {
     "Zenyatta":      {"rol_apoyo","es_omnico","cura_aliados","usa_orbes","monje","ataque_distancia"},
 
     # LORE
+    "Anubis":        {"ia","es_villano","tecnologia_avanzada","personaje_lore"},
     "Athena":        {"ia","es_overwatch","tecnologia_avanzada","personaje_lore"},
+    "Bob":           {"es_omnico","usa_arma_de_fuego","estilo_vaquero","gran_tamano","personaje_lore"},
+    "Mina Liao":     {"cientifico","es_overwatch","civil","personaje_lore","tecnologia_avanzada"},
     "Mondatta":      {"es_omnico","monje","personaje_lore"},
     "Maximilien":    {"es_omnico","es_talon","personaje_lore",},
-    "Efi Oladele":   {"cientifico","es_overwatch","civil","personaje_lore","tecnologia_avanzada"},
+    "Efi Oladele":   {"cientifico","es_overwatch","civil","personaje_lore","tecnologia_avanzada","es_africano"},
     "Emily":         {"personaje_lore","civil","es_britanica"},
     "Gerard Lacroix": {"personaje_lore","civil","es_overwatch"},
     "Balderich":     {"personaje_lore","usa_martillo","usa_escudo"},
     "Antonio Bartalotti": {"personaje_lore","civil","es_talon","es_lider"},
     "Katya Volskaya": {"personaje_lore","es_rusa","civil","es_lider"},
-    "Dr. Harold Winston": {"personaje_lore","es_overwatch","cientifico","civil"},
+    "Dr. Harold Winston": {"personaje_lore","espacial","es_overwatch","cientifico","civil"},
 }
 
 # ──────────────────────────────────────────────
@@ -147,7 +194,7 @@ PREGUNTAS = [
     ("¿Es un héroe tanque?",                    "rol_tanque"),
     ("¿Es un héroe de daño (DPS)?",             "rol_dano"),
     ("¿Es un héroe de apoyo?",                  "rol_apoyo"),
-    ("¿Es parte del lore?",                     "personaje_lore"),
+    ("¿Es un personaje no jugable?",            "personaje_lore"),
     ("¿Cura aliados?",                          "cura_aliados"),
     ("¿Usa armas de fuego?",                    "usa_arma_de_fuego"),
     ("¿Usa escudo?",                            "usa_escudo"),
@@ -179,7 +226,7 @@ PREGUNTAS = [
     ("¿Usa sniper?",                            "usa_sniper"),
     ("¿Usa explosivos?",                        "usa_explosivos"),
     ("¿Tiene alta movilidad?",                  "alta_movilidad"),
-    ("¿Es una asistente virtual?",              "ia"),
+    ("¿Es un ser virtual?",                     "ia"),
     ("¿Es una persona normal?",                 "civil"),
     ("¿Es científico o trabaja con ciencia?",   "cientifico"),
     ("¿Puede saltar grandes distancias?",       "puede_saltar"),
@@ -294,16 +341,20 @@ def filtrar(personajes, pos, neg):
             if pos.issubset(a) and not neg.intersection(a)]
 
 def mejor_pregunta(personajes, candidatos, restantes):
-    mejor, mejor_diff = None, 9999
+    """Selecciona una pregunta al azar de las que sean útiles"""
+    # Filtrar preguntas que tengan sentido (que dividan al menos un poco)
+    preguntas_validas = []
     for p, h in restantes:
         si  = sum(1 for c in candidatos if h in personajes[c])
         no_ = len(candidatos) - si
-        if si == 0 or no_ == 0:
-            continue
-        d = abs(si - no_)
-        if d < mejor_diff:
-            mejor_diff = d; mejor = (p, h)
-    return mejor
+        if si > 0 and no_ > 0:  # Solo preguntas que tengan al menos una respuesta sí y una no
+            preguntas_validas.append((p, h))
+    
+    if not preguntas_validas:
+        return None
+    
+    # Seleccionar una pregunta completamente al azar
+    return random.choice(preguntas_validas)
 
 # ──────────────────────────────────────────────
 #  INTERFAZ PYGAME
@@ -384,7 +435,7 @@ class AkinatorApp:
         self._init_state()
         self._build_menu()
         
-        # NUEVO: Variable para almacenar la imagen del personaje (LÍNEA 487)
+        # Variable para almacenar la imagen del personaje
         self.imagen_personaje = None
 
     # ── Estado del juego ──────────────────────
@@ -414,8 +465,8 @@ class AkinatorApp:
 
     def _build_question_btns(self):
         cx = ANCHO // 2
-        self.btn_si  = Button((cx-220, 470, 200, 65), "✓  SÍ",  (20,80,30), (30,140,50),  C_YES, self.f_big)
-        self.btn_no  = Button((cx+20,  470, 200, 65), "✗  NO",  (80,20,20), (140,30,30),  C_NO,  self.f_big)
+        self.btn_si  = Button((cx-220, 470, 200, 65), "  SÍ",  (20,80,30), (30,140,50),  C_YES, self.f_big)
+        self.btn_no  = Button((cx+20,  470, 200, 65), "  NO",  (80,20,20), (140,30,30),  C_NO,  self.f_big)
         self.btn_menu_q = Button((20, 20, 110, 38), "← Menú", C_PANEL, C_BTN_HOVER, C_DIMTEXT, self.f_small)
 
     def _build_result_btns(self):
@@ -451,7 +502,6 @@ class AkinatorApp:
         self.num_pregunta += 1
         self.state = self.QUESTION
 
-    # NUEVO: Método _set_result modificado para cargar la imagen (LÍNEAS 566-579)
     def _set_result(self, res, tipo):
         self.resultado      = res
         self.resultado_tipo = tipo
@@ -460,8 +510,8 @@ class AkinatorApp:
         
         if tipo == "exacto":
             self._spawn_particles()
-            # Cargar la imagen del personaje
-            self.imagen_personaje = cargar_imagen_personaje(res)
+            # Cargar la imagen del personaje con tamaño personalizado
+            self.imagen_personaje = cargar_imagen_personaje(res, tamaño_maximo=(280, 280))
         else:
             self.imagen_personaje = None
 
@@ -482,11 +532,11 @@ class AkinatorApp:
     def save_learned(self):
         nombre = self.text_input.text.strip()
         if not nombre:
-            self.msg_aprendido = "⚠ Escribe un nombre válido."; return
+            self.msg_aprendido = " Escribe un nombre válido."; return
         nuevos = self.pos.copy()
         self.personajes[nombre] = nuevos
         guardar_base(self.personajes)
-        self.msg_aprendido = f"✅ '{nombre}' aprendido. ¡Gracias!"
+        self.msg_aprendido = f" '{nombre}' aprendido. ¡Gracias!"
         self.learn_step = 1   # Mostrar confirmación breve
 
     # ── Partículas ────────────────────────────
@@ -590,7 +640,6 @@ class AkinatorApp:
         tip = self.f_small.render("Pulsa  S = Sí  •  N = No", True, C_DIMTEXT)
         self.screen.blit(tip, tip.get_rect(centerx=ANCHO//2, y=550))
 
-    # NUEVO: Método draw_result completamente modificado (LÍNEAS 725-813)
     def draw_result(self):
         self._draw_bg()
         self._update_particles()
@@ -602,7 +651,8 @@ class AkinatorApp:
 
         if self.resultado_tipo == "exacto":
             self._draw_header("¡Lo adiviné!")
-            panel = pygame.Rect(80, 140, ANCHO-160, 380)
+            # Hacer el panel un poco más grande para imágenes más grandes
+            panel = pygame.Rect(80, 140, ANCHO-160, 400)
             pygame.draw.rect(self.screen, C_PANEL, panel, border_radius=18)
             pygame.draw.rect(self.screen, C_GOLD,  panel, 3, border_radius=18)
 
@@ -610,23 +660,45 @@ class AkinatorApp:
             if self.imagen_personaje:
                 # Posición de la imagen (lado izquierdo del panel)
                 img_x = panel.x + 30
-                img_y = panel.y + 50
+                img_y = panel.y + 40
                 self.screen.blit(self.imagen_personaje, (img_x, img_y))
                 
                 # Ajustar posición del texto para que no se superponga
-                txt_x = img_x + 220
-                txt_y = img_y + 40
+                img_ancho = self.imagen_personaje.get_width()
+                txt_x = img_x + img_ancho + 20
+                txt_y = img_y + 60
                 
                 txt = self.f_big.render("Tu personaje es…", True, C_DIMTEXT)
                 self.screen.blit(txt, txt.get_rect(x=txt_x, y=txt_y))
                 
-                big = self.f_title.render(str(self.resultado), True, C_GOLD)
+                # Manejar nombres largos
+                nombre_texto = str(self.resultado)
+                big = self.f_title.render(nombre_texto, True, C_GOLD)
                 big_rect = big.get_rect(x=txt_x, y=txt_y + 50)
-                # Asegurar que el texto no se salga de la pantalla
+                
+                # Si el nombre es muy largo, usar fuente más pequeña
                 if big_rect.right > ANCHO - 30:
-                    big = self.f_med.render(str(self.resultado), True, C_GOLD)
+                    big = self.f_big.render(nombre_texto, True, C_GOLD)
                     big_rect = big.get_rect(x=txt_x, y=txt_y + 50)
-                self.screen.blit(big, big_rect)
+                
+                # Si aún es muy largo, dividir en dos líneas
+                if big_rect.right > ANCHO - 30:
+                    # Dividir el nombre si contiene espacios
+                    if ' ' in nombre_texto:
+                        palabras = nombre_texto.split()
+                        if len(palabras) >= 2:
+                            linea1 = ' '.join(palabras[:-1])
+                            linea2 = palabras[-1]
+                            big1 = self.f_med.render(linea1, True, C_GOLD)
+                            big2 = self.f_med.render(linea2, True, C_GOLD)
+                            self.screen.blit(big1, big1.get_rect(x=txt_x, y=txt_y + 50))
+                            self.screen.blit(big2, big2.get_rect(x=txt_x, y=txt_y + 90))
+                        else:
+                            self.screen.blit(big, big_rect)
+                    else:
+                        self.screen.blit(big, big_rect)
+                else:
+                    self.screen.blit(big, big_rect)
             else:
                 txt = self.f_big.render("Tu personaje es…", True, C_DIMTEXT)
                 self.screen.blit(txt, txt.get_rect(centerx=ANCHO//2, y=180))
@@ -634,7 +706,7 @@ class AkinatorApp:
                 self.screen.blit(big, big.get_rect(centerx=ANCHO//2, y=250))
 
             q_txt = self.f_small.render(f"Resuelto en {self.num_pregunta} preguntas", True, C_DIMTEXT)
-            self.screen.blit(q_txt, q_txt.get_rect(centerx=ANCHO//2, y=360))
+            self.screen.blit(q_txt, q_txt.get_rect(centerx=ANCHO//2, y=380))
 
         elif self.resultado_tipo == "varios":
             self._draw_header("No estoy seguro…")
