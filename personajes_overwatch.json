@@ -1,0 +1,528 @@
+{
+    "D_Va": [
+        "es_heroina",
+        "es_coreana",
+        "usa_mecha",
+        "usa_cohetes",
+        "protege_aliados",
+        "usa_arma_de_fuego",
+        "tecnologia_avanzada",
+        "puede_volar",
+        "alta_movilidad",
+        "rol_tanque"
+    ],
+    "Doomfist": [
+        "gran_tamano",
+        "combate_cuerpo_a_cuerpo",
+        "usa_guante",
+        "es_talon",
+        "es_lider",
+        "es_africano",
+        "alta_movilidad",
+        "rol_tanque",
+        "es_villano"
+    ],
+    "Domina": [
+        "tecnologia_avanzada",
+        "gran_tamano",
+        "es_villana",
+        "usa_escudo",
+        "es_talon",
+        "usa_luz",
+        "rol_tanque"
+    ],
+    "Hazard": [
+        "gran_tamano",
+        "combate_cuerpo_a_cuerpo",
+        "es_cyborg",
+        "puede_saltar",
+        "usa_escopeta",
+        "caotico",
+        "tecnologia_avanzada",
+        "es_lider",
+        "alta_movilidad",
+        "rol_tanque"
+    ],
+    "Junker Queen": [
+        "gran_tamano",
+        "combate_cuerpo_a_cuerpo",
+        "es_de_junkertown",
+        "usa_hacha",
+        "usa_arma_de_fuego",
+        "usa_escopeta",
+        "caotico",
+        "drena_vida",
+        "es_lider",
+        "rol_tanque"
+    ],
+    "Mauga": [
+        "gran_tamano",
+        "usa_ametralladoras",
+        "usa_arma_de_fuego",
+        "caotico",
+        "es_talon",
+        "es_de_isla",
+        "rol_tanque",
+        "es_villano"
+    ],
+    "Orisa": [
+        "es_omnico",
+        "protege_aliados",
+        "es_overwatch",
+        "usa_energia",
+        "tecnologia_avanzada",
+        "es_africana",
+        "usa_lanza",
+        "rol_tanque"
+    ],
+    "Ramattra": [
+        "gran_tamano",
+        "combate_cuerpo_a_cuerpo",
+        "es_omnico",
+        "usa_baston",
+        "rol_tanque",
+        "usa_energia",
+        "forma_nemesis",
+        "es_lider",
+        "null_sector",
+        "es_villano"
+    ],
+    "Reinhardt": [
+        "gran_tamano",
+        "combate_cuerpo_a_cuerpo",
+        "es_overwatch",
+        "usa_escudo",
+        "usa_martillo",
+        "veterano",
+        "es_aleman",
+        "rol_tanque"
+    ],
+    "Roadhog": [
+        "usa_escopeta",
+        "gran_tamano",
+        "usa_gancho",
+        "es_de_junkertown",
+        "usa_mascara",
+        "rol_tanque",
+        "usa_explosivos"
+    ],
+    "Sigma": [
+        "cientifico",
+        "tecnologia_avanzada",
+        "es_talon",
+        "controla_gravedad",
+        "usa_escudo",
+        "rol_tanque"
+    ],
+    "Winston": [
+        "cientifico",
+        "tecnologia_avanzada",
+        "es_animal",
+        "usa_rayo",
+        "puede_saltar",
+        "es_overwatch",
+        "rol_tanque"
+    ],
+    "Wrecking Ball": [
+        "tecnologia_avanzada",
+        "gran_tamano",
+        "es_de_junkertown",
+        "es_animal",
+        "usa_mecha",
+        "alta_movilidad",
+        "rol_tanque"
+    ],
+    "Zarya": [
+        "usa_canon",
+        "usa_barreras",
+        "usa_arma_de_fuego",
+        "es_rusa",
+        "protege_aliados",
+        "es_overwatch",
+        "rol_tanque"
+    ],
+    "Anran": [
+        "rol_dano",
+        "usa_arma_de_fuego",
+        "es_china",
+        "alta_movilidad",
+        "es_overwatch"
+    ],
+    "Ashe": [
+        "rol_dano",
+        "estilo_vaquero",
+        "usa_arma_de_fuego",
+        "tiene_companero",
+        "es_americana",
+        "es_lider",
+        "usa_rifle"
+    ],
+    "Bastion": [
+        "gran_tamano",
+        "rol_dano",
+        "es_omnico",
+        "usa_ametralladora",
+        "es_overwatch",
+        "usa_arma_de_fuego",
+        "modo_torreta",
+        "tecnologia_avanzada"
+    ],
+    "Cassidy": [
+        "rol_dano",
+        "estilo_vaquero",
+        "usa_arma_de_fuego",
+        "usa_revolver",
+        "usa_granadas",
+        "es_overwatch",
+        "es_americano"
+    ],
+    "Echo": [
+        "rol_dano",
+        "es_omnico",
+        "es_overwatch",
+        "usa_laser",
+        "tecnologia_avanzada",
+        "puede_copiar",
+        "puede_volar",
+        "alta_movilidad"
+    ],
+    "Genji": [
+        "es_cyborg",
+        "rol_dano",
+        "combate_cuerpo_a_cuerpo",
+        "usa_kunai",
+        "blackwatch",
+        "es_overwatch",
+        "es_japones",
+        "usa_espada",
+        "alta_movilidad"
+    ],
+    "Hanzo": [
+        "es_japones",
+        "rol_dano",
+        "usa_dragones",
+        "usa_arco",
+        "ataque_distancia",
+        "usa_explosivos"
+    ],
+    "Junkrat": [
+        "caotico",
+        "rol_dano",
+        "es_de_junkertown",
+        "usa_granadas",
+        "alta_movilidad",
+        "usa_explosivos"
+    ],
+    "Mei": [
+        "cientifico",
+        "rol_dano",
+        "usa_hielo",
+        "es_heroina",
+        "es_china",
+        "es_overwatch",
+        "usa_arma_de_fuego",
+        "controla_zona"
+    ],
+    "Pharah": [
+        "rol_dano",
+        "es_egipcia",
+        "usa_cohetes",
+        "es_overwatch",
+        "usa_arma_de_fuego",
+        "puede_volar",
+        "usa_armadura",
+        "alta_movilidad"
+    ],
+    "Reaper": [
+        "rol_dano",
+        "puede_teletransportarse",
+        "blackwatch",
+        "usa_arma_de_fuego",
+        "es_americano",
+        "es_talon",
+        "usa_escopetas",
+        "usa_mascara",
+        "alta_movilidad",
+        "es_villano"
+    ],
+    "Sojourn": [
+        "es_cyborg",
+        "rol_dano",
+        "es_canadiense",
+        "usa_arma_de_fuego",
+        "alta_movilidad",
+        "es_overwatch",
+        "usa_railgun"
+    ],
+    "Soldado: 76": [
+        "rol_dano",
+        "usa_visor",
+        "usa_arma_de_fuego",
+        "veterano",
+        "es_overwatch",
+        "usa_rifle",
+        "es_americano"
+    ],
+    "Sombra": [
+        "rol_dano",
+        "es_talon",
+        "puede_volverse_invisible",
+        "es_mexicana",
+        "alta_movilidad",
+        "usa_arma_de_fuego",
+        "hackea"
+    ],
+    "Symmetra": [
+        "tecnologia_avanzada",
+        "rol_dano",
+        "usa_torreta",
+        "usa_luz",
+        "es_india",
+        "crea_portal"
+    ],
+    "Torbjorn": [
+        "tecnologia_avanzada",
+        "rol_dano",
+        "usa_torreta",
+        "usa_martillo",
+        "es_sueco",
+        "es_ingeniero",
+        "usa_arma_de_fuego"
+    ],
+    "Tracer": [
+        "puede_retroceder_tiempo",
+        "es_britanica",
+        "rol_dano",
+        "usa_pistolas",
+        "alta_movilidad",
+        "es_overwatch"
+    ],
+    "Venture": [
+        "combate_cuerpo_a_cuerpo",
+        "rol_dano",
+        "explorador",
+        "excava",
+        "alta_movilidad",
+        "usa_taladro"
+    ],
+    "Widowmaker": [
+        "es_villana",
+        "rol_dano",
+        "es_talon",
+        "usa_gancho",
+        "ataque_distancia",
+        "usa_sniper",
+        "es_francesa"
+    ],
+    "Freja": [
+        "rol_dano",
+        "es_talon",
+        "usa_arco",
+        "ataque_distancia",
+        "alta_movilidad",
+        "usa_explosivos"
+    ],
+    "Emre": [
+        "es_cyborg",
+        "rol_dano",
+        "es_talon",
+        "usa_arma_de_fuego",
+        "usa_granadas",
+        "usa_rifle",
+        "es_villano"
+    ],
+    "Vendetta": [
+        "combate_cuerpo_a_cuerpo",
+        "rol_dano",
+        "es_villana",
+        "es_talon",
+        "usa_espada"
+    ],
+    "Sierra": [
+        "rol_dano",
+        "explorador",
+        "usa_arma_de_fuego",
+        "usa_granadas",
+        "alta_movilidad",
+        "usa_rifle"
+    ],
+    "Ana": [
+        "es_egipcia",
+        "es_overwatch",
+        "cura_aliados",
+        "rol_apoyo",
+        "usa_mascara",
+        "ataque_distancia",
+        "usa_sniper",
+        "veterano"
+    ],
+    "Baptiste": [
+        "ex_talon",
+        "cura_aliados",
+        "es_haitiano",
+        "rol_apoyo",
+        "protege_aliados",
+        "usa_arma_de_fuego"
+    ],
+    "Brigitte": [
+        "combate_cuerpo_a_cuerpo",
+        "protege_aliados",
+        "es_overwatch",
+        "cura_aliados",
+        "usa_escudo",
+        "usa_maza",
+        "rol_apoyo",
+        "es_sueca"
+    ],
+    "Illari": [
+        "cura_aliados",
+        "usa_torreta",
+        "usa_sol",
+        "es_peruana",
+        "rol_apoyo",
+        "ataque_distancia",
+        "usa_arma_de_fuego"
+    ],
+    "Juno": [
+        "tecnologia_avanzada",
+        "cura_aliados",
+        "puede_volar",
+        "rol_apoyo",
+        "espacial",
+        "alta_movilidad",
+        "es_overwatch"
+    ],
+    "Jetpack cat": [
+        "es_overwatch",
+        "usa_arma_de_fuego",
+        "cura_aliados",
+        "es_animal",
+        "puede_volar",
+        "rol_apoyo",
+        "ataque_distancia",
+        "alta_movilidad"
+    ],
+    "Kiriko": [
+        "es_japonesa",
+        "cura_aliados",
+        "rol_apoyo",
+        "usa_kunai",
+        "usa_espiritu",
+        "alta_movilidad"
+    ],
+    "Lifeweaver": [
+        "tecnologia_avanzada",
+        "cura_aliados",
+        "es_tailandes",
+        "rol_apoyo",
+        "protege_aliados",
+        "usa_naturaleza"
+    ],
+    "Lucio": [
+        "cura_aliados",
+        "usa_musica",
+        "rol_apoyo",
+        "alta_movilidad",
+        "aumenta_velocidad",
+        "es_overwatch",
+        "es_brasileno"
+    ],
+    "Mercy": [
+        "usa_baston",
+        "protege_aliados",
+        "es_overwatch",
+        "usa_arma_de_fuego",
+        "es_suiza",
+        "revive_aliados",
+        "cura_aliados",
+        "puede_volar",
+        "rol_apoyo"
+    ],
+    "Mizuki": [
+        "es_japonesa",
+        "cura_aliados",
+        "rol_apoyo",
+        "usa_espiritu",
+        "alta_movilidad"
+    ],
+    "Moira": [
+        "cientifico",
+        "cura_aliados",
+        "es_talon",
+        "drena_vida",
+        "rol_apoyo",
+        "puede_teletransportarse",
+        "es_irlandesa"
+    ],
+    "Wuyang": [
+        "cura_aliados",
+        "es_china",
+        "rol_apoyo",
+        "usa_baston",
+        "es_overwatch"
+    ],
+    "Zenyatta": [
+        "monje",
+        "cura_aliados",
+        "ataque_distancia",
+        "rol_apoyo",
+        "es_omnico",
+        "usa_orbes"
+    ],
+    "Athena": [
+        "ia",
+        "tecnologia_avanzada",
+        "es_overwatch",
+        "personaje_lore"
+    ],
+    "Mondatta": [
+        "monje",
+        "es_omnico",
+        "personaje_lore"
+    ],
+    "Maximilien": [
+        "es_omnico",
+        "es_talon",
+        "personaje_lore"
+    ],
+    "Efi Oladele": [
+        "cientifico",
+        "tecnologia_avanzada",
+        "civil",
+        "personaje_lore",
+        "es_overwatch"
+    ],
+    "Emily": [
+        "civil",
+        "es_britanica",
+        "personaje_lore"
+    ],
+    "Gerard Lacroix": [
+        "civil",
+        "personaje_lore",
+        "es_overwatch"
+    ],
+    "Balderich": [
+        "usa_escudo",
+        "usa_martillo",
+        "personaje_lore"
+    ],
+    "Antonio Bartalotti": [
+        "civil",
+        "personaje_lore",
+        "es_lider",
+        "es_talon"
+    ],
+    "Katya Volskaya": [
+        "civil",
+        "personaje_lore",
+        "es_lider",
+        "es_rusa"
+    ],
+    "Dr. Harold Winston": [
+        "cientifico",
+        "civil",
+        "personaje_lore",
+        "es_overwatch"
+    ]
+}
